@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "breaking bread backend",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "Peter0102",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}

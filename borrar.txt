@@ -1,0 +1,7 @@
+   
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "4200:80"

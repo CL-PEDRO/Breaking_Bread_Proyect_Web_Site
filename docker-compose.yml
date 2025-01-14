@@ -1,0 +1,44 @@
+services:
+  breakingBread_db:
+    image: mysql:8.0.33
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQLDB_DATABASE
+      MYSQL_USER: $MYSQLDB_USER
+      MYSQL_PASSWORD: $MYSQLDB_USER_PASSWORD
+    ports:
+      - "$MYSQLDB_PORT_EXPOSE:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./images:/var/lib/mysql-files
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    env_file: ./.env
+    environment:
+      PMA_HOST: breakingBread_db
+      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+    ports:
+      - "$PHPMYADMIN_PORT_EXPOSE:80"
+
+  backend:
+   build: ./backend
+   env_file: ./.env
+   depends_on:
+     - breakingBread_db
+   links:
+     - breakingBread_db
+   ports:
+   - "$BACKEND_PORT_EXPOSE:3000"  
+
+   
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "4200:80"
+
+volumes:
+  db_data:
