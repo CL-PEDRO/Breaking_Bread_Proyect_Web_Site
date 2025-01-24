@@ -5,13 +5,20 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "nodemon src/app.js"
   },
   "author": "Peter0102",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mysql2": "^3.12.0"
+    "mysql2": "^3.12.0",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.9"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6"
   }
 }

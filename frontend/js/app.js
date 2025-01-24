@@ -10,6 +10,8 @@ class Application {
     }
 
     addProduct(product) {
+
+        console.log('this.BASE_URL', this.BASE_URL,'/products');
         fetch(`${this.BASE_URL}/products`, {
             method: 'POST',
             headers: {
@@ -30,7 +32,7 @@ class Application {
     getProducts() {
         fetch(`${this.BASE_URL}/products`)
             .then(response => response.json())
-            .then(data => {
+             .then(data => {
 
                 console.log(data);
                 const producsList = document.getElementById('products');

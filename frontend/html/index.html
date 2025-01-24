@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Breaking Bread</title>
+  <link rel="stylesheet" href="/frontend/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="img/logo.png" alt="logo" class="logo-img">
+            Breaking Bread
+        </div>
+        <input type="checkbox" id="toggle">
+        <label for="toggle"> <img class="menu" src="img/menu.png" alt="menu"> </label>
+        <nav class="navegation">
+            <ul class="nav-links"> <!-- Agregué la clase nav-links -->
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Foro</a></li>
+                <li><a href="#">Mi perfil</a></li>
+                <li><a href="#" id="search-button">Buscar</a></li>
+            </ul>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar..." class="search-input">
+            </div>
+        </nav>
+    </header>
+
+
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search recipes..." />
+        <button id="search-button">Search</button>
+      </div>
+      <ul id="results-list"></ul>
+      
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const searchButton = document.getElementById("search-button");
+            const navLinks = document.querySelector(".nav-links");
+            const searchBar = document.querySelector(".search-bar");
+    
+            searchButton.addEventListener("click", (e) => {
+                e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+    
+                // Alterna la visibilidad de los elementos
+                navLinks.classList.toggle("hidden");
+                searchBar.classList.toggle("active");
+            });
+    
+            // Opcional: Cierra la barra de búsqueda si se hace clic fuera
+            document.addEventListener("click", (e) => {
+                if (!searchBar.contains(e.target) && e.target !== searchButton) {
+                    navLinks.classList.remove("hidden");
+                    searchBar.classList.remove("active");
+                }
+            });
+        });
+    </script>
+    <script src="/frontend/js/busqueda.js"></script>
+</body>
+</html>

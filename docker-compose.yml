@@ -12,6 +12,8 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./images:/var/lib/mysql-files
+    networks:
+     - breakingBread
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -21,6 +23,8 @@ services:
       MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
     ports:
       - "$PHPMYADMIN_PORT_EXPOSE:80"
+    networks:
+      - breakingBread
 
   backend:
    build: ./backend
@@ -31,14 +35,23 @@ services:
      - breakingBread_db
    ports:
    - "$BACKEND_PORT_EXPOSE:3000"  
+   networks:
+     - breakingBread
 
    
   nginx:
-    restart: always
-    build:
-      context: ./nginx
+    image: nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
     ports:
       - "4200:80"
+    networks:
+      - breakingBread
 
+    
+networks:
+  breakingBread:
+  
 volumes:
   db_data:
