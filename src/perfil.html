@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Breaking Bread - Perfil</title>
+ <link rel="stylesheet" href="style0.css">
+ <style>
+   /* Estilos para el perfil */
+   .profile-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     padding: 20px;
+     background-color: #f9f9f9;
+   }
+
+
+   .profile-header {
+     display: flex;
+     align-items: center;
+     gap: 20px;
+     margin-bottom: 20px;
+   }
+
+
+   .profile-image {
+     width: 100px;
+     height: 100px;
+     border-radius: 50%;
+     object-fit: cover;
+     border: 2px solid #ccc;
+   }
+
+
+   .profile-info {
+     text-align: left;
+   }
+
+
+   .profile-info h2 {
+     margin: 0;
+     font-size: 1.5rem;
+   }
+
+
+   .profile-info p {
+     margin: 5px 0;
+     font-size: 1rem;
+     color: #666;
+   }
+
+
+   .stats-container {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     gap: 30px;
+     margin-bottom: 20px;
+   }
+
+
+   .stat {
+     text-align: center;
+   }
+
+
+   .stat h3 {
+     margin: 0;
+     font-size: 1.2rem;
+   }
+
+
+   .stat p {
+     margin: 0;
+     font-size: 0.9rem;
+     color: #666;
+   }
+
+
+   .follow-button {
+     padding: 10px 20px;
+     background-color: #007bff;
+     color: white;
+     border: none;
+     border-radius: 5px;
+     font-size: 1rem;
+     cursor: pointer;
+     transition: background-color 0.3s;
+   }
+
+
+   .follow-button:hover {
+     background-color: #0056b3;
+   }
+
+
+   .posts-container {
+     width: 100%;
+     max-width: 900px; /* Ajuste del ancho */
+     background-color: #fff;
+     padding: 20px;
+     border-radius: 8px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   }
+
+
+   .post {
+     border-bottom: 1px solid #eee;
+     padding: 10px 0;
+   }
+
+
+   .post:last-child {
+     border-bottom: none;
+   }
+
+
+   .post h4 {
+     margin: 0;
+     font-size: 1.1rem;
+   }
+
+
+   .post p {
+     margin: 5px 0;
+     font-size: 0.9rem;
+     color: #666;
+   }
+
+
+   .post img {
+     width: 100%;
+     border-radius: 8px;
+     margin-top: 10px;
+   }
+ </style>
+</head>
+<body>
+ <header class="header">
+   <div class="logo">
+     <img src="img/logo.png" alt="logo" class="logo-img">
+     Breaking Bread
+   </div>
+   <input type="checkbox" id="toggle">
+   <label for="toggle"> <img class="menu" src="img/menu.png" alt="menu"> </label>
+   <nav class="navegation">
+     <ul class="nav-links">
+       <li><a href="#">Inicio</a></li>
+       <li><a href="#">Foro</a></li>
+       <li><a href="#">Mi perfil</a></li>
+       <li><a href="#" id="search-button">Buscar</a></li>
+     </ul>
+     <div class="search-bar">
+       <input type="text" placeholder="Buscar..." class="search-input">
+     </div>
+   </nav>
+ </header>
+
+
+ <header class="header">
+    <div class="logo">
+      <img src="img/logo.png" alt="logo" class="logo-img">
+      Breaking Bread
+    </div>
+    <input type="checkbox" id="toggle">
+    <label for="toggle"> <img class="menu" src="img/menu.png" alt="menu"> </label>
+    <nav class="navegation">
+      <ul class="nav-links">
+        <li><a href="#">Inicio</a></li>
+        <li><a href="#">Foro</a></li>
+        <li><a href="#">Mi perfil</a></li>
+        <li><a href="#" id="search-button">Buscar</a></li>
+      </ul>
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar..." class="search-input">
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenedor del perfil -->
+  <div class="profile-container">
+    <div class="profile-header">
+      <img src="img/usuario.webp" alt="Foto de perfil" class="profile-image">
+      <div class="profile-info">
+        <h2 id="user-name">Cucho777</h2>
+        <p id="user-description">Hola yo sou mateo y me gusta el mango rico</p>
+      </div>
+    </div>
+    <div class="stats-container">
+      <div class="stat">
+        <h3 id="user-followers">0</h3>
+        <p>Seguidores</p>
+      </div>
+      <div class="stat">
+        <h3 id="user-following">0</h3>
+        <p>Seguidos</p>
+      </div>
+    </div>
+
+    <button class="follow-button" id="follow-button">Crear publicación</button>
+
+    <div class="posts-container" id="posts-container">
+      <h2>Publicaciones Recientes</h2>
+      <!-- Las publicaciones se cargarán aquí dinámicamente -->
+    </div>
+  </div>
+
+ <script src="./nav.js"></script>
+ <script src="./perfil.js"></script>
+ <script>
+   document.addEventListener("DOMContentLoaded", () => {
+       const followButton = document.getElementById("follow-button");
+
+
+       followButton.addEventListener("click", () => {
+           window.location.href='./publicacion.html';
+       });
+
+
+       const searchButton = document.getElementById("search-button");
+       const navLinks = document.querySelector(".nav-links");
+       const searchBar = document.querySelector(".search-bar");
+
+
+       searchButton.addEventListener("click", (e) => {
+           e.preventDefault(); // Evita el comportamiento predeterminado del enlace
+
+
+           // Alterna la visibilidad de los elementos
+           navLinks.classList.toggle("hidden");
+           searchBar.classList.toggle("active");
+       });
+
+
+       // Opcional: Cierra la barra de búsqueda si se hace clic fuera
+       document.addEventListener("click", (e) => {
+           if (!searchBar.contains(e.target) && e.target !== searchButton) {
+               navLinks.classList.remove("hidden");
+               searchBar.classList.remove("active");
+           }
+       });
+   });
+ </script>
+</body>
+</html>
+
+
+
+
