@@ -16,7 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = "http://localhost:4200/html/foro.html";
                     break;
                 case "mi perfil":
-                    window.location.href = "http://localhost:4200/html/perfil.html";
+
+                     isLogged();
+                    
                     break;
                 case "buscar":
                     document.querySelector(".search-bar").classList.toggle("active");
@@ -27,3 +29,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+
+function isLogged() {
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+  
+    // Asegúrate de que el usuario esté autenticado
+    if (!userId || !userName) {
+      alert('Por favor, inicia sesión para continuar.');
+      window.location.href = './html/Login.html';
+      return;
+    }else
+    {
+        window.location.href = "http://localhost:4200/html/perfil.html";
+    }
+
+}

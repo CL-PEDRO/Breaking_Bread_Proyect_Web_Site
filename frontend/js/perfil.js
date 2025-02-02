@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const userId = localStorage.getItem("userId"); // Obtener el ID del usuario desde localStorage
-    
+    console.log(userId);
     if (!userId) {
       console.error("No se encontró el ID del usuario en localStorage.");
       return;
@@ -8,19 +8,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       // Obtener datos del usuario
-      const userResponse = await fetch("http://192.168.137.186:5000/perfilUser", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id_user: userId }),
-      });
+      const urlUsuario = `http://localhost:5000/perfilUser/${userId}`;
+      console.log(urlUsuario);
+      const userResponse = await fetch(urlUsuario);
 
       if (!userResponse.ok) {
         throw new Error("Error al obtener datos del usuario.");
       }
-      console.table(userData);
+      
       const userData = await userResponse.json();
+      console.table(userData);
       const userNameElement = document.getElementById("user-name");
       const userDescriptionElement = document.getElementById("user-description");
       const userFollowersElement = document.getElementById("user-followers");
@@ -28,18 +25,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // Asignar datos al perfil
       userNameElement.textContent = userData.nombre_Usuario || "Usuario sin nombre";
-      userDescriptionElement.textContent = userData.descripcion || "Sin descripción";
-      userFollowersElement.textContent = userData.seguidores || 0;
-      userFollowingElement.textContent = userData.seguidos || 0;
+      userDescriptionElement.textContent = userData.descripcion || `Hoal soy ${userData.nombre_Usuario} y me gusta cocinar`;
+      userFollowersElement.textContent = userData.seguidores || 1;
+      userFollowingElement.textContent = userData.seguidos || 1;
 
       // Obtener publicaciones del usuario
-      const postsResponse = await fetch("http://192.168.137.186:5000/publicacionesUser", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id_user: userId }),
-      });
+      const urlPublicaciones = `http://localhost:5000/publicacionesUser/${userId}`;
+      console.log(urlPublicaciones);
+      const postsResponse = await fetch(urlPublicaciones)
 
       if (!postsResponse.ok) {
         throw new Error("Error al obtener publicaciones.");

@@ -11,7 +11,6 @@ services:
       - "$MYSQLDB_PORT_EXPOSE:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./images:/var/lib/mysql-files
     networks:
      - breakingBread
 
@@ -34,9 +33,13 @@ services:
    links:
      - breakingBread_db
    ports:
-   - "$BACKEND_PORT_EXPOSE:3000"  
+     - "$BACKEND_PORT_EXPOSE:5000"  
    networks:
      - breakingBread
+   volumes:
+     - ./uploads/images:/app/uploads/images
+
+    
 
    
   nginx:
@@ -45,6 +48,7 @@ services:
       - "$NGINX_PORT_EXPOSE:80"
     volumes:
       - ./frontend/:/usr/share/nginx/html
+      - ./uploads/images:/usr/share/nginx/html/uploads/images
     depends_on:
       - backend
 

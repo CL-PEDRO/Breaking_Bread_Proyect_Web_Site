@@ -1,24 +1,10 @@
-if(window.location.pathname === '/index.html')
-{
-
+// Init JS
+  console.log("click busqueda :d22222222222");
   document.addEventListener('DOMContentLoaded', async () => {
-    // Obtén los datos del usuario almacenados en localStorage
-    const userId = localStorage.getItem('userId');
-    const userName = localStorage.getItem('userName');
-  
-    // Asegúrate de que el usuario esté autenticado
-    if (!userId || !userName) {
-      alert('Por favor, inicia sesión para continuar.');
-      window.location.href = '../html/Login.html';
-      return;
-    }
-  
-    // Personaliza la experiencia según el usuario
-    //document.getElementById('profile-link').textContent = `Mi perfil (${userName})`;
-  
-    // Carga las publicaciones dinámicamente
+
+    console.log("click busqueda :d3333333333333333333");
     try {
-      const response = await fetch('http://192.168.137.186:5000/publicaciones', {
+      const response = await fetch('http://localhost:5000/publicaciones', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -33,16 +19,17 @@ if(window.location.pathname === '/index.html')
         publicaciones.forEach((post) => {
           const postElement = document.createElement('div');
           postElement.classList.add('col-md-4', 'mb-4');
-  
+          console.log(post.url_image);
           postElement.innerHTML = `
             <div class="card">
-              <img src="${post.imagen}" class="card-img-top" alt="${post.titulo}">
+            <a href="">  <img id="imma"src="${post.url_image}" class="card-img-top" alt="${post.titulo}"></a>
               <div class="card-body">
                 <h5 class="card-title">${post.titulo}</h5>
                 <p class="card-text">${post.descripcion}</p>
                 <p class="card-text"><small class="text-muted">Publicado por: ${post.usuario}</small></p>
               </div>
             </div>
+            
           `;
           postContainer.appendChild(postElement);
         });
@@ -51,11 +38,5 @@ if(window.location.pathname === '/index.html')
       }
     } catch (error) {
       console.error('Error al conectar con el servidor:', error);
-    }
-  });
+    }});
   
-}else{
-  console.log("No es la página de inicio");
-  
-}
-

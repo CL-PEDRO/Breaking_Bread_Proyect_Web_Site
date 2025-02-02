@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       try {
         // Realiza una solicitud POST al servidor
-        const response = await fetch('http://192.168.137.186:5000/usersAuthentication', {
+        const response = await fetch('http://localhost:5000/usersAuthentication', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('userName', nombre_Usuario);
         
           // Redirige a la pantalla de inicio
-          window.location.href = './inicio.html';
+          window.location.href = 'http://localhost:4200/index.html';
         } else {
           const error = await response.json();
           alert('Error al iniciar sesión: ' + error.message);
