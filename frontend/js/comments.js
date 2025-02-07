@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
         const urlParameters = new URLSearchParams(window.location.search);
         const searchTerm = urlParameters.get('q');
         const id_post = urlParameters.get('q');
-        console.log(searchTerm);
+        //console.log(searchTerm);
 
 
         getComments();
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
 
             const comment = textComment[0].value;
 
-            console.log(comment);
+            //console.log(comment);
             if (comment.length > 0 ) {  
                 const id_user = localStorage.getItem('userId');
                 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
                     text_comentario: comment
                 };
                 textComment[0].value = ' ';
-                console.table(data);
+                //console.table(data);
                 postComment(data);
                 
             } else {
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
             
             ShowCommentarios.innerHTML = '';
             data.forEach(comentario => {
-                console.log("Comentarios :D");
+                //console.log("Comentarios :D");
                 const writtenTime = extraerHoraMinutos(comentario.fecha)
                 const newComment = document.createElement('li');
                 
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
                 
             });
             
-            console.log(data);
+            //console.log(data);
         }
 
         // Función para enviar el comentario
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
                 body: JSON.stringify(data)
             });
             const result = await response.json();  // Cambié la variable de 'data' a 'result' para evitar confusión
-            console.log(result);
+            //console.log(result);
             getComments();
         }
     } else {
@@ -107,10 +107,10 @@ function extraerHoraMinutos(datetimeString) {
     const fecha = new Date(datetimeString.replace(" ", "T"));
     
 
-    console.log("La fecha anterior:", fecha);
+    ////console.log("La fecha anterior:", fecha);
 
     const currentDate = new Date();
-    console.log("Fecha y hora actual:", currentDate);
+    ////console.log("Fecha y hora actual:", currentDate);
 
     
     const diferenciaMs = currentDate - fecha;

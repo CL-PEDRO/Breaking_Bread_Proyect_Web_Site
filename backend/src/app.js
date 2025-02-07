@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import cors from 'cors';
 import { createPool } from 'mysql2/promise';
 import multer from 'multer';
@@ -152,7 +152,7 @@ app.get('/recetasPorNombre/:nombre_Receta', async (req, res) => {
 app.get('/publicacionesUser/:id_user', async (req, res) => {
         try{
         const { id_user } = req.params;
-        const [user] = await pool.query('SELECT Publicaciones.titulo, Contenidos.texto , Recetas.nombre_Receta,Recetas.descripcion_Reseta from Publicaciones,Contenidos,Recetas, Usuario WHERE Recetas.id_receta = Contenidos.id_receta and Contenidos.id_contenido = Publicaciones.id_contenido and Usuario.id_user = Publicaciones.id_usuario and Usuario.id_user =?;', [id_user]);
+        const [user] = await pool.query('SELECT Publicaciones.id_publicacion,Publicaciones.titulo, Contenidos.texto , Recetas.nombre_Receta,Recetas.descripcion_Reseta from Publicaciones,Contenidos,Recetas, Usuario WHERE Recetas.id_receta = Contenidos.id_receta and Contenidos.id_contenido = Publicaciones.id_contenido and Usuario.id_user = Publicaciones.id_usuario and Usuario.id_user =?;', [id_user]);
         res.json(user);
         }catch (error) {
         console.error('Error al obtener usuario:', error);
@@ -244,6 +244,33 @@ app.get('/publicacionesUser/:id_user', async (req, res) => {
 
   });
   
+  //Obtener todos los likes de un publicacion 
+  app.get('/getLikes/:id_post', async (req, res) => {
+    try {
+      const id_post = req.params.id_post;
+  
+      
+      if (isNaN(id_post)) {
+        return res.status(400).json({ mensaje: "El ID de la publicación debe ser un número" });
+      }
+      console.log("Vamos a ver.5s");
+
+      const [response] = await pool.query('SELECT COUNT(Likes_Publicaciones.id_like) AS total_likes FROM Likes_Publicaciones  WHERE Likes_Publicaciones.id_publicacion = ?;',[id_post]);
+  
+      
+      res.json(response[0]);
+  
+    } catch (error) {
+      
+      
+      res.status(500).json({ mensaje: "Error al obtener los likes", error: error.message });
+    }
+  });
+    
+
+  app.get('/publicaciones/isLiked/:id_user/:id_post', async (req,res)=>{
+
+  });
   
 
 
@@ -441,9 +468,72 @@ app.get('/publicacionesUser/:id_user', async (req, res) => {
       }
     });
 
+    //Agregar like
+    app.post('/publicaciones2/addLike/:id_post/:id_user', async(req,res) =>
+    {
+      try
+      {
+        const id_post = req.params.id_post;
+        const id_user = req.params.id_user;   
+             
+        await pool.query('INSERT INTO Likes_Publicaciones(id_like, id_usuario, id_publicacion) VALUES (null,?,?);',[id_user,id_post]);
+        
+
+        res.status(200).json({mensaje:"Like agregado "});
+        
+      }catch(error)
+      {
+        console.error('Error agregando like:', error);
+        res.status(500).json({ message: 'Internal server error likes :C', code: 'APP-03' });
+      }
 
 
+    } );
 
+
+    //Agregar Like y verificacion
+
+    app.post('/publicaciones/addLike/:id_post/:id_user', async (req, res) => {
+      try {
+        const id_post = req.params.id_post;
+        const id_user = req.params.id_user;
+    
+        
+        const [existingLike] = await pool.query(
+          'SELECT id_like FROM Likes_Publicaciones WHERE id_usuario = ? AND id_publicacion = ?;',
+          [id_user, id_post]
+        );
+    
+        if (existingLike.length > 0) {
+          
+          const response = await pool.query(
+            'DELETE FROM Likes_Publicaciones WHERE id_usuario = ? AND id_publicacion = ?;',
+            [id_user, id_post]
+          );
+    
+          return res.status(200).json({ mensaje: "Like eliminado", isLiked: false });
+        } else {
+          
+          const response = await pool.query(
+            'INSERT INTO Likes_Publicaciones(id_like, id_usuario, id_publicacion) VALUES (NULL, ?, ?);',
+            [id_user, id_post]
+          );
+    
+          if (response[0].affectedRows > 0) {
+            return res.status(200).json({ mensaje: "Like agregado", isLiked: true });
+          } else {
+            return res.status(500).json({ mensaje: "No se pudo agregar el like", code: 'APP-04' });
+          }
+        }
+      } catch (error) {
+        console.error('Error en la operación de like:', error);
+        return res.status(500).json({ mensaje: 'Internal server error likes :C', code: 'APP-03' });
+      }
+    });
+    
+
+
+    
 
 
 

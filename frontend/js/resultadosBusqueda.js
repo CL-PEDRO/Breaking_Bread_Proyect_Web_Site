@@ -17,9 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         publicaciones.forEach((post) => {
           const postElement = document.createElement('li');
           postElement.classList.add('col-md-4', 'mb-4');
-  
+          console.table(post);
           postElement.innerHTML = `
-            <div class="card">
+          <a href= 'http://localhost:4200/html/showPost.html?q=${post.id_publicacion}'>
+          <div class="card">
               <img src="${post.imagen}" class="card-img-top" alt="${post.titulo}">
               <div class="card-body">
                 <h5 class="card-title">${post.titulo}</h5>
@@ -27,6 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <p class="card-text"><small class="text-muted">Publicado por: ${post.usuario}</small></p>
               </div>
             </div>
+            </a>  
           `;
           postContainer.appendChild(postElement);
         });

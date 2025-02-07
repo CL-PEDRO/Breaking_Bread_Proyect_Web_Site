@@ -48,6 +48,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       postsContainer.innerHTML = "<h2>Publicaciones Recientes</h2>";
 
       postsData.forEach((post) => {
+        console.log("Crear nuva piblicacion");
+        const linkPost =  document.createElement('a');
+        
+        linkPost.href = `http://localhost:4200/html/showPost.html?q=${post.id_publicacion}`;
+         ///publicacionesUser/:id_user
+         //./html/showPost.html?q=${post.id_publicacion}"
         const postElement = document.createElement("div");
         postElement.classList.add("post");
 
@@ -60,7 +66,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const postRecipe = document.createElement("p");
         postRecipe.textContent = `Receta: ${post.nombre_Receta || "No disponible"} - ${post.descripcion_Reseta || "Sin descripción"}`;
 
-        postElement.appendChild(postTitle);
+        linkPost.appendChild(postTitle);       
+        postElement.appendChild(linkPost);
         postElement.appendChild(postText);
         postElement.appendChild(postRecipe);
 

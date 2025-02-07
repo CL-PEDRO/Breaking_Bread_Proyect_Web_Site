@@ -173,6 +173,7 @@
 
        <!-- Search Results -->
        <div class="search-results">
+
            <ul id="resultsList">
                <!-- Dynamic content will be inserted here -->
            </ul>
@@ -307,9 +308,13 @@
         data.forEach(receta => {
             const li = document.createElement('li');
             li.innerHTML = `
+                
                 <img src="${receta.url_image}" alt="Profile Picture">
+                <a href='http://localhost:4200/html/showPost.html?q=${receta.id_publicacion}'> 
                 <span>${receta.nombre_Receta}</span>
+                </a>
                 <span>${receta.descripcion_Reseta}</span>
+                
             `;
             resultsList.appendChild(li);
         });
