@@ -16,18 +16,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         throw new Error("Error al obtener datos del usuario.");
       }
       
-      const userData = await userResponse.json();
-      console.table(userData);
+      const {foto_perfil,nombre_Usuario} = await userResponse.json();
+      //console.table(userData);
+      console.log("Esta es la foto ;D",foto_perfil);
       const userNameElement = document.getElementById("user-name");
       const userDescriptionElement = document.getElementById("user-description");
       const userFollowersElement = document.getElementById("user-followers");
       const userFollowingElement = document.getElementById("user-following");
+      const userImageProfile = document.getElementById("user-image-profile");
 
       // Asignar datos al perfil
-      userNameElement.textContent = userData.nombre_Usuario || "Usuario sin nombre";
-      userDescriptionElement.textContent = userData.descripcion || `Hoal soy ${userData.nombre_Usuario} y me gusta cocinar`;
-      userFollowersElement.textContent = userData.seguidores || 1;
-      userFollowingElement.textContent = userData.seguidos || 1;
+      userNameElement.textContent = nombre_Usuario || "Usuario sin nombre";
+      userDescriptionElement.textContent =  `Hoal soy ${nombre_Usuario} y me gusta cocinar`;
+      userFollowersElement.textContent =  1;
+      userFollowingElement.textContent = 1;
+      userImageProfile.src = foto_perfil || "/uploads/images/Comida1.webp";
 
       // Obtener publicaciones del usuario
       const urlPublicaciones = `http://localhost:5000/publicacionesUser/${userId}`;

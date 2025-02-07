@@ -1,8 +1,7 @@
 // Init JS
-  console.log("click busqueda :d22222222222");
   document.addEventListener('DOMContentLoaded', async () => {
 
-    console.log("click busqueda :d3333333333333333333");
+    
     try {
       const response = await fetch('http://localhost:5000/publicaciones', {
         method: 'GET',
@@ -19,10 +18,10 @@
         publicaciones.forEach((post) => {
           const postElement = document.createElement('div');
           postElement.classList.add('col-md-4', 'mb-4');
-          console.log(post.url_image);
+          
           postElement.innerHTML = `
             <div class="card">
-            <a href="">  <img id="imma"src="${post.url_image}" class="card-img-top" alt="${post.titulo}"></a>
+            <a href="./html/showPost.html?q=${post.id_publicacion}">  <img id="imma"src="${post.url_image}" class="card-img-top" alt="${post.titulo}"></a>
               <div class="card-body">
                 <h5 class="card-title">${post.titulo}</h5>
                 <p class="card-text">${post.descripcion}</p>

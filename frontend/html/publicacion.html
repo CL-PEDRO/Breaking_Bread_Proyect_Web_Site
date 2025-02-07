@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>crear publicacion</title>
+   <link rel="stylesheet" href="../css/createPost.css">
+   <link rel="stylesheet" href="../css/index.css" />
+   <link rel="stylesheet" href="./css/style_princi.css" />
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <img src="../images/logo.png" alt="logo" class="logo-img" />
+          Breaking Bread 2
+        </div>
+        <input type="checkbox" id="toggle" />
+        <label for="toggle">
+          <img class="menu" src="../images/menu.png" alt="menu">
+        </label>
+        <nav class="navegation">
+          <ul class="nav-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Foro</a></li>
+            <li><a href="#" id="profile-link">Mi Perfil</a></li>
+            <li><a href="#" onclick="searh()" id="search-button">Buscar</a></li>
+          </ul>
+          <div class="search-bar">
+            <input type="text" placeholder="Buscar..." class="search-input" />
+          </div>
+        </nav>
+      </header>
+
+    <div class="container"> 
+        <h2>Crear Publicación</h2>
+    
+        <form id="crear-publicacion-form" enctype="multipart/form-data">
+            <!-- Título -->
+            <label for="titulo">Título</label>
+            <input type="text" name="titulo" id="titulo" class="input-field" placeholder="Título (opcional)">
+    
+            <!-- Texto -->
+            <label for="texto">Texto</label>
+            <textarea name="texto" id="texto" class="textarea-field" placeholder="Escribe algo..."></textarea>
+    
+            <!-- Subir fotos -->
+            <label for="image">Subir Fotos</label>
+            <input type="file" accept="image/*" name="image" id="image" class="input-field">
+    
+            <!-- Recetas -->
+            <div class="recipe-section">
+                <h3>Receta</h3>
+    
+                <label for="nombre_Receta">Nombre de la Receta</label>
+                <input type="text" name="name" id="nombre_Receta" class="input-field" placeholder="Nombre de la receta">
+    
+                <label for="descripcion_Receta">Descripción</label>
+                <textarea name="description" id="descripcion_Receta" class="textarea-field" placeholder="Descripción"></textarea>
+    
+                <label for="ingredients">Ingredientes</label>
+                <textarea name="ingredients" id="ingredients" class="textarea-field" placeholder="Lista de ingredientes"></textarea>
+    
+                <label for="procedimiento">Procedimiento</label>
+                <textarea name="preparation" id="procedimiento" class="textarea-field" placeholder="Instrucciones paso a paso"></textarea>
+    
+                <label for="id_tipo">Tipo de receta</label>
+                <select name="id_tipo" id="id_tipo" class="input-field">
+                    <option value="1">Desayuno</option>
+                    <option value="4">Cena</option>
+                    <option value="3">Comida</option>
+                    <option value="2">Snack</option>
+                </select>
+            </div>
+    
+            <!-- Botón Crear Publicación -->
+            <button type="submit" class="button">Crear Publicación</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById("crear-publicacion-form").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Evita la recarga de la página
+    
+            const formData = new FormData(this);
+            const id_user = localStorage.getItem("userId");
+            formData.append("id_usuario", id_user); 
+            console.table([...formData]);
+    
+            try {
+                const response = await fetch("http://localhost:5000/CreateRecipePublication", {
+                    method: "POST",
+                    body: formData
+                });
+    
+                const data = await response.json();
+                console.log("Publicación creada:", data);
+                alert("Publicación creada exitosamente!");
+    
+            } catch (error) {
+                console.error("Error al enviar los datos:", error);
+                alert("Hubo un error al enviar la publicación.");
+            }
+        });
+    </script>
+    
+  
+   <script src="../js/publicacion.js"></script>
+   <script src="../js/nav.js" defer></script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

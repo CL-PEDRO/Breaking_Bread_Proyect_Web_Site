@@ -38,7 +38,7 @@ function isLogged() {
     // Asegúrate de que el usuario esté autenticado
     if (!userId || !userName) {
       alert('Por favor, inicia sesión para continuar.');
-      window.location.href = './html/Login.html';
+      window.location.href = 'http://localhost:4200/html/Login.html';
       return;
     }else
     {

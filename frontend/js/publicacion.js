@@ -27,12 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
       
         try {
             // Procesar imágenes
-            //const imagenesBase64 = await Promise.all(imagenPromises);
+            //const imagenesBase64 = await Promise.all();
 
             // Crear el objeto para enviar
             const datos = {
                 titulo: titulo,
                 id_usuario: usuarioId,
+                image: imagenesBase64,
                 texto: texto,
                 id_img: 1, // Enviar imágenes en formato Base64
                 name: nombreReceta,
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             // Hacer la llamada al servidor
-            const respuesta = await fetch("http://192.168.137.186:5000/CreateRecipePublication", {
+            const respuesta = await fetch("http://localhost:5000/CreateRecipePublication", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -56,11 +57,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const data = await respuesta.json();
-            //alert("Publicación creada con éxito.");
+            alert("Publicación creada con éxito.");
             console.log("Datos de la respuesta:", data);
 
             // Limpiar el formulario
-            window.location.href = './perfil.html';
+            window.location.href = 'http://localhost:4200/html/perfil.html';
             limpiarFormulario();
 
         } catch (error) {

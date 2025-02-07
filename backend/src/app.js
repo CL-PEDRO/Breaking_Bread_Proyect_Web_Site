@@ -77,10 +77,10 @@ app.get('/publicaciones', async (req, res) => {
 //Buscar Receta por tipo de receta
 
 app.get('/recetastipo/:id_tipo', async (req, res) => {
-    console.log('Solicitud recibida en /RecetasTipo/:id_tipo'); // Log para depuración
+    
   
     try {
-      console.log('Solicitud recibida en /RecetasTipo/:id_tipo 2'); // Log para depuración
+    
   
       const { id_tipo } = req.params;
   
@@ -112,6 +112,39 @@ app.get('/recetastipo/:id_tipo', async (req, res) => {
   });
 
 
+//Buscar Receta por nombre de receta
+app.get('/recetasPorNombre/:nombre_Receta', async (req, res) => {
+
+  const { nombre_Receta } = req.params;
+  console.log('Solicitud recibida en /recetasPorNombre/:nombre_Receta', nombre_Receta); // Log para depuración
+  if (!nombre_Receta) {
+    return res.status(400).json({ message: 'El nombre de la receta es requerido', code: 'APP-02' });
+  }
+  try{
+
+    const queryByName = `SELECT Recetas.nombre_Receta, Recetas.descripcion_Reseta, Recetas.ingredientes,
+     Recetas.procedimiento, Recetas.url_image,Publicaciones.id_publicacion 
+     FROM Recetas JOIN Tipos ON Recetas.id_tipo = Tipos.id_tipo JOIN Contenidos ON 
+     Contenidos.id_receta = Recetas.id_receta JOIN Publicaciones ON Publicaciones.id_contenido =
+      Contenidos.id_contenido WHERE LOWER(Recetas.nombre_Receta) LIKE '%${nombre_Receta}%';`;
+    const [recipe] = await pool.query(queryByName);
+    
+    if (recipe.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron recetas para el nombre especificado', code: 'APP-04' });
+    }else
+    {
+      res.json(recipe);
+    }
+
+  }catch(error){
+    console.error('Error al obtener receta:', error);
+    res.status(500).json({ message: 'Error al obtener receta', code: 'APP-03' });
+  }
+
+
+});
+
+
 
 
 //Publicaciones por id_user
@@ -134,20 +167,82 @@ app.get('/publicacionesUser/:id_user', async (req, res) => {
  
 //Buscar Usuario por id_user
 
-app.get('/perfilUser/:id_user', async (req, res) => {
+  app.get('/perfilUser/:id_user', async (req, res) => {
         try{
          // Log para depuración
         const { id_user } = req.params;
         console.log('Solicitud recibida en /perfilUser/:id_user',id_user); // Log para depuración
-        const [user] = await pool.query('SELECT Usuario.nombre_Usuario FROM Usuario WHERE Usuario.id_user = ?;', [id_user]);
+        const [user] = await pool.query('SELECT Usuario.nombre_Usuario, Usuario.foto_perfil FROM Usuario WHERE Usuario.id_user = ?;', [id_user]);
         res.json(user[0]);
         }catch (error) {
         console.error('Error al obtener usuario:', error);
         res.status(500).json({ message: 'Error al obtener usuario' });
         }
-    } );
-    
+      } );
 
+
+  app.get('/postdata/:id_post', async (req, res) => {
+
+    try {
+      const {id_post} = req.params;
+      console.log('Solicitud recibida en /postdata/:id_post',id_post); // Log para depuración
+      const queryPost = `SELECT Publicaciones.titulo, Usuario.nombre_Usuario,
+       Contenidos.texto , Recetas.nombre_Receta,Recetas.descripcion_Reseta,Recetas.url_image,Usuario.foto_perfil
+       ,Recetas.ingredientes,Recetas.procedimiento
+        from Publicaciones,Contenidos,Recetas, Usuario
+      WHERE Recetas.id_receta = Contenidos.id_receta and
+       Contenidos.id_contenido = Publicaciones.id_contenido and
+        Usuario.id_user = Publicaciones.id_usuario and Publicaciones.id_publicacion=${id_post};`
+
+      const [post] = await pool.query(queryPost);
+
+      if (post.length === 0) {
+        return res.status(404).json({ message: 'No se encontraron publicaciones para el usuario especificado', code: 'APP-04' });
+      }else{
+        res.json(post);
+      }
+
+      
+
+    } catch (error) {
+        console.error('Error al obtener publicacion:', error);
+        res.status(500).json({ message: 'Error al obtener publicacion' });
+    }
+
+  }); 
+
+
+    
+//Buscar Todos los comentarios
+  app.get('/publicaciones/:id_post/getComments', async(req,res) =>
+  { 
+    
+    const id_post = req.params.id_post;
+    
+    if(!id_post)
+      res.status(500).json({ message: 'Error al obtener los commentarios id incorrecto/inexistene ni se escribir ;-; :D' });  
+
+    try{
+
+
+      const queryGetComments = `SELECT Usuario.nombre_Usuario, Usuario.foto_perfil, Comentarios_Publicaciones.comentario,Comentarios_Publicaciones.fecha
+       FROM Comentarios_Publicaciones
+      JOIN Usuario on Usuario.id_user = Comentarios_Publicaciones.id_usuario        
+      WHERE Comentarios_Publicaciones.id_publicacion = ${id_post}
+      ORDER BY Comentarios_Publicaciones.fecha DESC;`;
+
+      const response = await pool.query(queryGetComments);
+
+      res.json(response[0]);
+
+    }catch(error)
+    {
+      console.error('Error al obtener comentarios :D:', error);
+      res.status(500).json({ message: 'Error al obtener los commentarios id incorrecto/inexistene ni se escribir ;-; :D fucckk ' });
+    }
+      
+
+  });
   
   
 
@@ -230,7 +325,8 @@ app.get('/perfilUser/:id_user', async (req, res) => {
             preparation: procedimiento,
             id_tipo
           } = req.body;
-      
+          
+          console.table(req.body);
           // Validación de datos requeridos
           if (
             !titulo ||
@@ -321,6 +417,29 @@ app.get('/perfilUser/:id_user', async (req, res) => {
         }
     });
     
+
+
+
+    //Agregar comentario a una publicación
+    app.post('/publicaciones/:id_publicacion/comentarios', async (req, res) => {
+        
+      console.table(req.body);
+      const id_post = req.params.id_publicacion;
+      const { id_user, text_comentario, fecha } = req.body;
+
+      console.table(req.body);
+
+      try{
+        const [result] = await pool.query(
+          'INSERT INTO Comentarios_Publicaciones (id_usuario, id_publicacion, comentario, fecha) VALUES (?, ?, ?, ?)',
+          [id_user, id_post, text_comentario, fecha]
+        );
+        res.json({ Data : result,message: 'Comentario agregado', code: 'APP-01' });
+      }catch(error){
+        console.error('Error al agregar comentario:', error);
+        res.status(500).json({ message: 'Error al agregar comentario' });
+      }
+    });
 
 
 

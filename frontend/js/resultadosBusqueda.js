@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   
     try {
-      const response = await fetch('http://192.168.137.186:5000/publicaciones', {
+      const response = await fetch('http://localhost:5000/publicaciones', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
       if (response.ok) {
         const publicaciones = await response.json();
-        const postContainer = document.getElementById('post-container');
+        const postContainer = document.getElementById('search-results');
   
         // Inserta cada publicación en el contenedor
         publicaciones.forEach((post) => {
@@ -38,3 +38,4 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
   
+
