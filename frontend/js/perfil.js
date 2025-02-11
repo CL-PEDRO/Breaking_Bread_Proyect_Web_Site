@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const userId = localStorage.getItem("userId"); // Obtener el ID del usuario desde localStorage
+    const userId = localStorage.getItem("userId"); 
     console.log(userId);
     if (!userId) {
       console.error("No se encontró el ID del usuario en localStorage.");
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-      // Obtener datos del usuario
+      
       const urlUsuario = `http://localhost:5000/user/info/perfilUser/${userId}`;
       console.log(urlUsuario);
       const userResponse = await fetch(urlUsuario);
@@ -21,18 +21,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log("Esta es la foto ;D",foto_perfil);
       const userNameElement = document.getElementById("user-name");
       const userDescriptionElement = document.getElementById("user-description");
-      const userFollowersElement = document.getElementById("user-followers");
-      const userFollowingElement = document.getElementById("user-following");
       const userImageProfile = document.getElementById("user-image-profile");
 
-      // Asignar datos al perfil
+      
       userNameElement.textContent = nombre_Usuario || "Usuario sin nombre";
-      userDescriptionElement.textContent =  `Hoal soy ${nombre_Usuario} y me gusta cocinar`;
-      userFollowersElement.textContent =  1;
-      userFollowingElement.textContent = 1;
+      userDescriptionElement.textContent =  `Hola soy ${nombre_Usuario} y me gusta cocinar`;
+
       userImageProfile.src = "/"+foto_perfil  || "/uploads/images/1738518143870-442359402.png";
 
-      // Obtener publicaciones del usuario
+
       const urlPublicaciones = `http://localhost:5000/user/info/publicacionesUser/${userId}`;
       console.log(urlPublicaciones);
       const postsResponse = await fetch(urlPublicaciones)
@@ -44,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const postsData = await postsResponse.json();
       const postsContainer = document.getElementById("posts-container");
 
-      // Limpiar publicaciones existentes
+      
       postsContainer.innerHTML = "<h2>Publicaciones Recientes</h2>";
 
       postsData.forEach((post) => {
@@ -78,7 +75,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Navegación
+  
   document.getElementById("follow-button").addEventListener("click", () => {
     window.location.href = "./publicacion.html";
+  });
+
+  document.getElementById("log-out-button").addEventListener("click",()=>{
+    
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+
+    window.location.href = 'http://localhost:4200/html/Login.html';
   });

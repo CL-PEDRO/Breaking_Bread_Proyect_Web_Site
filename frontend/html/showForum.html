@@ -100,7 +100,7 @@
         <li><a href="#">Inicio</a></li>
         <li><a href="#">Foro</a></li>
         <li><a href="#" id="profile-link">Mi Perfil</a></li>
-        <li><a href="#"  id="search-button">Buscar</a></li>
+        
       </ul>
       <div class="search-bar">
         <input type="text" placeholder="Buscar..." class="search-input" />
@@ -112,22 +112,22 @@
         <div class="cabezera">
             
             <img src="/images/fondo2.png" id="post-img" class="post-img" alt="">
-            <h1 id="title-forum">TÍTULO MEJORADO</h1>
-            <button><i class="bi bi-person-circle"></i></button>
-            <button></button>
-            <i class="bi bi-search"></i>
+            <h1 id="title-forum">TITULO </h1>
             
+
             
-            <p id="description-forum">Esta es un grupo de prueba con mejor estilo.</p>
+            <p id="description-forum">Descripcion.</p>
         </div>
     </div>
     <div class="container mt-5 d-flex flex-column">
-        <!-- Nueva sección para crear una publicación -->
+        
         <div class="new-post-section d-flex align-items-center p-3 bg-light rounded shadow-sm mb-4 col-md-9 com-sm-4">
             <i class="bi bi-pencil-square fs-4 me-2 text-primary"></i>
             
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearPublicacionModal">
+            <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#crearPublicacionModal">
                 <h5 class="mb-0 flex-grow-1">Crear nueva publicación</h5>
+                
+
             </button>
         </div>
     
@@ -141,23 +141,8 @@
             </ul>
         </div>
     </div>
-    
-    
-    <div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="commentModalLabel">Comentarios</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Aquí van los comentarios...</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
-        <!-- Modal -->
+        <!-- Modal crear post -->
         <div class="modal fade" id="crearPublicacionModal" tabindex="-1" aria-labelledby="crearPublicacionModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -205,6 +190,46 @@
         </div>
     
 
+          <!-- Botón que activa el modal -->
+  <div class="container mt-5">
+    
+  </div>
+        <!-- Modal Comentarios-->
+           <!-- Modal de Bootstrap -->
+  <div class="modal fade" id="comentariosModal" tabindex="-1" aria-labelledby="comentariosModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Encabezado del modal -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="comentariosModalLabel">Comentarios</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        
+        <!-- Cuerpo del modal con la sección de comentarios -->
+        <div class="modal-body">
+        
+          <div class="comments mt-3">
+            <form id="comment-form" class="d-flex">
+              <input type="text" placeholder="Escribe un comentario..." class="comment-input form-control me-2">
+              <button id="submit-button" type="submit" class="btn btn-dark">Comentar</button>
+            </form>
+          </div>
+          <div class="listCommetns mt-3">
+            <ul id="commentarios" class="list-group">
+              <!-- Comentarios aquí -->
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Pie del modal -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 <script>
     async function searchForumByName(name)
     {
@@ -351,7 +376,8 @@
                             <h5 class="card-title">${post.titulo}</h5>
                             <p class="card-text">${post.descripcion_Reseta}</p>
                             <p class="text-muted"><small>Publicado por: ${post.nombre_Usuario}</small></p>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">Comentarios</button>
+                            
+                            <button id="${post.id_publicacion}" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#comentariosModal">Comentarios</button>
                         </div>
                     </div>
                 </div>
@@ -361,7 +387,7 @@
     }
 </script>
     
-    
+    <script src="../js/funcionComments.js"></script>
     <script src="../js/nav.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

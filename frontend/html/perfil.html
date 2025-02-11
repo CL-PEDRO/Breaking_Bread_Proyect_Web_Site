@@ -5,6 +5,7 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Breaking Bread - Perfil</title>
  <link rel="stylesheet" href="../css/index.css">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
  <style>
    /* Estilos para el perfil */
    .profile-container {
@@ -79,20 +80,36 @@
 
 
    .follow-button {
-     padding: 10px 20px;
-     background-color: #007bff;
-     color: white;
-     border: none;
-     border-radius: 5px;
-     font-size: 1rem;
-     cursor: pointer;
-     transition: background-color 0.3s;
-   }
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+   .log-out-button {
+    padding: 10px 20px;
+    background-color: #121105;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
 
    .follow-button:hover {
-     background-color: #0056b3;
+     background-color: #384f08;
    }
+
+   .log-out-button:hover {
+    background-color: #e44e0d;
+  }
+
+  
 
 
    .posts-container {
@@ -166,25 +183,19 @@
       <img id="user-image-profile"  alt="Foto de perfil" class="profile-image">
       <div class="profile-info">
         <h2 id="user-name">Cucho777</h2>
-        <p id="user-description">Hola yo sou mateo y me gusta el mango rico</p>
+        <p id="user-description">Hola yo sou mateo </p>
       </div>
     </div>
     <div class="stats-container">
-      <div class="stat">
-        <h3 id="user-followers">0</h3>
-        <p>Seguidores</p>
-      </div>
-      <div class="stat">
-        <h3 id="user-following">0</h3>
-        <p>Seguidos</p>
-      </div>
     </div>
 
-    <button class="follow-button" id="follow-button">Crear publicación</button>
+    <button class="follow-button" id="follow-button" style="gap: 20px;">Crear publicación</button><br>
+    <button class="log-out-button" id="log-out-button"><i style="font-size: 50px; margin:15px" class="bi bi-door-closed-fill"></i></button>
+    
 
     <div class="posts-container" id="posts-container">
       <h2>Publicaciones Recientes</h2>
-      <!-- Las publicaciones se cargarán aquí dinámicamente -->
+      
     </div>
   </div>
 
