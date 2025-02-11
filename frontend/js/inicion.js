@@ -1,6 +1,6 @@
 // Init JS
   document.addEventListener('DOMContentLoaded', async () => {
-
+    isLogged();
     
     try {
       const response = await fetch('http://localhost:5000/posts/info/publicaciones', {

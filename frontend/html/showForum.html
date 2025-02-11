@@ -125,11 +125,10 @@
         <!-- Nueva sección para crear una publicación -->
         <div class="new-post-section d-flex align-items-center p-3 bg-light rounded shadow-sm mb-4 col-md-9 com-sm-4">
             <i class="bi bi-pencil-square fs-4 me-2 text-primary"></i>
-            <h5 class="mb-0 flex-grow-1">Crear nueva publicación</h5>
+            
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearPublicacionModal">
-                Crear Publicación
+                <h5 class="mb-0 flex-grow-1">Crear nueva publicación</h5>
             </button>
-            <a href="/" class="btn btn-primary">Ir</a>
         </div>
     
         <div class="row flex-grow-1" id="post-container"></div>
@@ -206,139 +205,67 @@
         </div>
     
 
-    <script> 
-        document.addEventListener("DOMContentLoaded",function()
-        {
-            const  urlParamenters = new URLSearchParams(window.location.search);
-            const id_forum = urlParamenters.get('q');
-            
-            const urlForum = `http://localhost:5000/forum/getInfoForumbyID/${id_forum}`;
-            fetch(urlForum)
-            .then(response => response.json())
-            .then(data =>{
-                //console.table(data);
-                showForum(data);
-            });
+<script>
+    async function searchForumByName(name)
+    {
+        console.log("Se esta buscando en la funcion",name);
+        urlForum = `http://localhost:5000/forum/getInfoForum/${name}`;
+        fetch(urlForum)
+        .then(response => response.json())
+        .then(data=>{
+            console.table(data);
+            showResults(data);
+        })
+    }
 
-
-            function showForum(dataf){
-                const data = dataf[0];
-                const forumImage = document.getElementById("post-img");
-                const forumTitle = document.getElementById("title-forum");
-                const forumDescription = document.getElementById("description-forum");
-
-                forumImage.src= "/"+ data.image;
-                forumTitle.textContent = data.titulo_foro;
-                forumDescription.textContent = data.descripcion_Foro;
-
-            }
-            
-            const urlForumGetPost = `http://localhost:5000/forum/getPostFromForum/${id_forum}`;
-            fetch(urlForumGetPost)
-            .then(response => response.json())
-            .then(data =>{
-
-                console.log("Pares de valores");
-                console.table(data);
-                searchPosts(data);
-            });
-
-
-
-            function searchPosts(data)
-            {
-                data.forEach(post =>{
-                    console.log("Id del post par ainclucir ",post.id_publicacion);
-                    const urlPost = `http://localhost:5000/posts/info/postdata/${post.id_publicacion}`;
-                    fetch(urlPost)
-                    .then(response => response.json())
-                    .then(data =>{
-                        console.table(data);
-                        showPost(data);
-                    });
-                });
-
-            }
-
-            function showPost(data)
-            {
-                
-            const postContainer = document.getElementById("post-container");
-            
-            data.forEach(post => {
-                const postHTML = `
-                    <div class="col-md-9 mb-4">
-                        <div class="card post-card">
-                            <img src="/${post.url_image}" class="card-img-top post-img" alt="${post.titulo}">
-                            <div class="card-body">
-                                <h5 class="card-title">${post.titulo}</h5>
-                                <p class="card-text">${post.descripcion_Reseta}</p>
-                                <p class="text-muted"><small>Publicado por: ${post.nombre_Usuario}</small></p>                                
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">Comentarios</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                postContainer.innerHTML += postHTML;
-            });
-
-            }
-
-            window.addEventListener("scroll", function() {
-                const sidebar = document.getElementById("sidebar");
-                const cabezera = document.querySelector(".cabezera");
-                if (window.scrollY > cabezera.clientHeight) {
-                    sidebar.classList.add("fixed-sidebar");
-                } else {
-                    sidebar.classList.remove("fixed-sidebar");
-                }
-            });        
-            
-            
-            
-        });
-
-        async function searchForumByName(name)
-        {
-            console.log("Se esta buscando en la funcion",name);
-            urlForum = `http://localhost:5000/forum/getInfoForum/${name}`;
-            fetch(urlForum)
-            .then(response => response.json())
-            .then(data=>{
-                console.table(data);
-                showResults(data);
-            })
-        }
+    function showResults(data)
+{
+    const resultsList = document.getElementById('resultsList');
+    resultsList.innerHTML= '';
+    data.forEach(forum =>{
+        const li = document.createElement('li');
+        console.log("Id del foro",forum.id_foro);
+        li.innerHTML = `
     
-        function showResults(data)
-        {
-            const resultsList = document.getElementById('resultsList');
-            resultsList.innerHTML= '';
-            data.forEach(forum =>{
-                const li = document.createElement('li');
-                console.log("Id del foro",forum.id_foro);
-                li.innerHTML = `
-            
-                <a href="http://localhost:4200/html/showForum.html?q=${forum.id_foro}">
-                 <img class="ImagenComentario" src="/${forum.image}" alt="Profile Picture">
-                <div class="info-container">
-                <span class="title">${forum.titulo_foro}</span>
-             </div>
-            </a>`;
+        <a href="http://localhost:4200/html/showForum.html?q=${forum.id_foro}">
+         <img class="ImagenComentario" src="/${forum.image}" alt="Profile Picture">
+        <div class="info-container">
+        <span class="title">${forum.titulo_foro}</span>
+     </div>
+    </a>`;
 
-                resultsList.appendChild(li);
-            })
-        }
+        resultsList.appendChild(li);
+    })
+}
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        window.addEventListener("scroll", function() {
+            const sidebar = document.getElementById("sidebar");
+            const cabezera = document.querySelector(".cabezera");
+            if (window.scrollY > cabezera.clientHeight) {
+                sidebar.classList.add("fixed-sidebar");
+            } else {
+                sidebar.classList.remove("fixed-sidebar");
+            }
+        });        
 
 
-    </script>
-    <script>
-        document.getElementById("crear-publicacion-form").addEventListener("submit", async function(event) {
-            event.preventDefault(); 
+                
+
+
+        const urlParameters = new URLSearchParams(window.location.search);
+        const id_forum = urlParameters.get('q');
+    
+        loadForumData(id_forum);
+        loadForumPosts(id_forum);
+    
+        document.getElementById("crear-publicacion-form").addEventListener("submit", async function (event) {
+            event.preventDefault();
             const formData = new FormData(this);
             const id_user = localStorage.getItem("userId");
-            formData.append("id_usuario", id_user); 
-            
+            formData.append("id_usuario", id_user);
+    
             try {
                 const response = await fetch("http://localhost:5000/recipe/CreateRecipePublication", {
                     method: "POST",
@@ -346,49 +273,93 @@
                 });
     
                 const data = await response.json();
-                const {ids} = data;
-                const {id_post} = ids;
-                console.log("ids de la consuilat",id_post);
-                alert("Publicación creada exitosamente!");
-                console.log("Este es el nuevo id del post para insertar en la dupla")
-                insertDupla(id_post);
-                
-                
+                const { id_post } = data.ids;
+                //alert("Publicación creada exitosamente!");
+    
+                await insertDupla(id_post, id_forum);
                 document.getElementById("crear-publicacion-form").reset();
                 var modal = bootstrap.Modal.getInstance(document.getElementById("crearPublicacionModal"));
-                
                 modal.hide();
     
+                // Recargar los posts después de agregar uno nuevo
+                loadForumPosts(id_forum);
             } catch (error) {
                 console.error("Error al enviar los datos:", error);
-                alert("Hubo un error al enviar la publicación.");
+                //alert("Hubo un error al enviar la publicación.");
             }
         });
-
-
-        async function insertDupla(id_post)
-        {
-            const  urlParamenters = new URLSearchParams(window.location.search);
-            const id_forum = urlParamenters.get('q');
-
-            try{
-                const queryInsertDupla = `http://localhost:5000/forum/insertDupla/${id_post}/${id_forum}`;
-
-                const response = await fetch(queryInsertDupla,{
-                    method: "POST"
-                });
+    });
     
-                const data = await response.json();
-                alert("Insert dupla exitosamente!");
-
-            }catch(error)
-            {
-                console.error("Error al enviar los datos:", error);
-                alert("Hubo un error al enviar la publicación insert id.");
-            }
-            
+    async function loadForumData(id_forum) {
+        const urlForum = `http://localhost:5000/forum/getInfoForumbyID/${id_forum}`;
+        try {
+            const response = await fetch(urlForum);
+            const data = await response.json();
+            showForum(data[0]);
+        } catch (error) {
+            console.error("Error al cargar los datos del foro:", error);
         }
-    </script>
+    }
+    
+    async function loadForumPosts(id_forum) {
+        const urlForumGetPost = `http://localhost:5000/forum/getPostFromForum/${id_forum}`;
+        try {
+            const response = await fetch(urlForumGetPost);
+            const data = await response.json();
+            document.getElementById("post-container").innerHTML = ""; // Limpiar posts previos
+            searchPosts(data);
+        } catch (error) {
+            console.error("Error al cargar los posts del foro:", error);
+        }
+    }
+    
+    async function insertDupla(id_post, id_forum) {
+        try {
+            const queryInsertDupla = `http://localhost:5000/forum/insertDupla/${id_post}/${id_forum}`;
+            await fetch(queryInsertDupla, { method: "POST" });
+            //alert("Insert dupla exitosamente!");
+        } catch (error) {
+            console.error("Error al insertar la dupla:", error);
+            //alert("Hubo un error al insertar la dupla.");
+        }
+    }
+    
+    function showForum(data) {
+        document.getElementById("post-img").src = "/" + data.image;
+        document.getElementById("title-forum").textContent = data.titulo_foro;
+        document.getElementById("description-forum").textContent = data.descripcion_Foro;
+    }
+    
+    function searchPosts(data) {
+        data.forEach(post => {
+            const urlPost = `http://localhost:5000/posts/info/postdata/${post.id_publicacion}`;
+            fetch(urlPost)
+                .then(response => response.json())
+                .then(showPost)
+                .catch(error => console.error("Error al cargar los datos del post:", error));
+        });
+    }
+    
+    function showPost(posts) {
+        const postContainer = document.getElementById("post-container");
+        posts.forEach(post => {
+            const postHTML = `
+                <div class="col-md-9 mb-4">
+                    <div class="card post-card">
+                        <img src="/${post.url_image}" class="card-img-top post-img" alt="${post.titulo}">
+                        <div class="card-body">
+                            <h5 class="card-title">${post.titulo}</h5>
+                            <p class="card-text">${post.descripcion_Reseta}</p>
+                            <p class="text-muted"><small>Publicado por: ${post.nombre_Usuario}</small></p>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#commentModal">Comentarios</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            postContainer.innerHTML += postHTML;
+        });
+    }
+</script>
     
     
     <script src="../js/nav.js" defer></script>

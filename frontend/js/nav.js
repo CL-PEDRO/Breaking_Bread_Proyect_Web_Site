@@ -49,6 +49,7 @@ function isLogged() {
       return false;
     }else
     {
+        console.log("Esta logeado en efecto :;D");
         return true;
     }
 

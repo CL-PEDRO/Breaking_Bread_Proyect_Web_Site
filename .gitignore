@@ -1,0 +1,51 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+logs/
+*.log
+log/
+
+# Directorios de construcción y dependencias
+build/
+dist/
+
+# Variables de entorno y configuraciones sensibles
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de editores
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Cache y archivos temporales
+*.cache
+.tmp/
+
+# Cobertura de pruebas
+coverage/
+
+# Archivos de producción
+public/
+
+# Despliegue (si usas PM2)
+pids/
+dump.rdb
+pm-debug.log*
+
+# Archivos de bases de datos locales
+*.sqlite
+*.sqlite3
+
+# Si usas TypeScript
+tsconfig.tsbuildinfo
