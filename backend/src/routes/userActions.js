@@ -19,15 +19,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-//Buscar Todos los comentarios
-router.get("/:id_post/getComments",allComments);
-///publicaciones/:id_post/getComments
 
-//Agregar comentario a una publicación
+router.get("/:id_post/getComments",allComments);
+
+
 router.post("/:id_publicacion/postComment", createComment);
 
-///publicaciones/:id_publicacion/comentarios
-//Agregar like ??
+
 router.post("/addLike2/:id_post/:id_user", async (req, res) => {
   try {
     const id_post = req.params.id_post;
@@ -46,16 +44,11 @@ router.post("/addLike2/:id_post/:id_user", async (req, res) => {
       .json({ message: "Internal server error likes :C", code: "router-03" });
   }
 });
-///publicaciones2/addLike/:id_post/:id_user
 
-//Agregar Like y verificacion
 router.post("/addLike/:id_post/:id_user",addLikeAuth);
-
-///publicaciones/addLike/:id_post/:id_user
 
 
 router.delete("/removePost/:id_post",removePost);
-
 
 
 router.post("/createForum",upload.single("image"),createForum);
