@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Foro - Red Social de Cocineros</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #d47202; /* Fondo cálido */
+            color: #9e4f1b; /* Texto en tono tierra */
+        }
+        .forum-container {
+            background-color: #FFF; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            background-color: #D9534F;
+            border-color: #D9534F;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #FF5722;
+            border-color: #FF5722;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <img src="/images/logo.png" alt="logo" class="logo-img" />
+          Breaking Bread 
+        </div>
+        <input type="checkbox" id="toggle" />
+        <label for="toggle"
+          ><img class="menu" src="./images/menu.png" alt="menu"
+        /></label>
+        <nav class="navegation">
+          <ul class="nav-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Foro</a></li>
+            <li><a href="#" id="profile-link">Mi Perfil</a></li>
+            <li><a href="#"  id="search-button">Buscar</a></li>
+          </ul>
+          <div class="search-bar">
+            <input type="text" placeholder="Buscar..." class="search-input" />
+          </div>
+        </nav>
+      </header>
+
+<div class="container mt-5">
+    <div class="col-md-8 offset-md-2 forum-container">
+       
+        <form id="create-forum-form" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="tittle_forum" class="form-label">Título del Foro</label>
+                <input type="text" class="form-control" name="tittle_forum" placeholder="Ej: Recetas Caseras" required>
+            </div>
+            <div class="mb-3">
+                <label for="forum_description" class="form-label">Descripción</label>
+                <textarea class="form-control" name="forum_description" rows="3" placeholder="Breve descripción del foro" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="topic_forum" class="form-label">Tema</label>
+                <select class="form-select" name="topic_forum">
+                    <option selected>Selecciona un tema</option>
+                    <option value="recetas">Recetas</option>
+                    <option value="ingredientes">Ingredientes</option>
+                    <option value="tecnicas">Técnicas de cocina</option>
+                    <option value="utensilios">Utensilios</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Subir Imagen</label>
+                <input type="file" accept="image/*" class="form-control" name="image" required>
+            </div>
+            <button type="submit" class="btn btn-custom w-100">Crear Foro</button>
+        </form>
+    </div>
+</div>
+
+<script defer>
+    document.addEventListener('DOMContentLoaded', () => { // Corregido aquí
+        const form = document.getElementById("create-forum-form");
+        
+        if (!form) {
+            console.error("Formulario no encontrado en el DOM.");
+            return;
+        }
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+    
+            const dataForm = new FormData(this);
+            const id_user_own = localStorage.getItem('userId');
+            dataForm.append("id_user_own", id_user_own);
+    
+            console.table("Datos a enviar:", [...dataForm]);
+            
+            try {
+                const response = await fetch('http://localhost:5000/posts/userActions/createForum', {
+                    method: "POST",
+                    body: dataForm
+                });
+
+                const result = await response.json();
+                console.log("Forum created successfully:", result);
+                const new_forum_id = result[0].insertId;
+                console.log("este es el nuevo id",new_forum_id);
+                window.location.href = `http://localhost:4200/html/showForum.html?q=${new_forum_id}`
+                
+            } catch (error) {
+                console.error("Error al enviar los datos al tratar de crear un nuevo foro:", error);
+            }
+        });
+    });
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

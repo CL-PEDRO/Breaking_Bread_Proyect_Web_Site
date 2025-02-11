@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
       // Obtener datos del usuario
-      const urlUsuario = `http://localhost:5000/perfilUser/${userId}`;
+      const urlUsuario = `http://localhost:5000/user/info/perfilUser/${userId}`;
       console.log(urlUsuario);
       const userResponse = await fetch(urlUsuario);
 
@@ -30,10 +30,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       userDescriptionElement.textContent =  `Hoal soy ${nombre_Usuario} y me gusta cocinar`;
       userFollowersElement.textContent =  1;
       userFollowingElement.textContent = 1;
-      userImageProfile.src = foto_perfil || "/uploads/images/Comida1.webp";
+      userImageProfile.src = "/"+foto_perfil  || "/uploads/images/1738518143870-442359402.png";
 
       // Obtener publicaciones del usuario
-      const urlPublicaciones = `http://localhost:5000/publicacionesUser/${userId}`;
+      const urlPublicaciones = `http://localhost:5000/user/info/publicacionesUser/${userId}`;
       console.log(urlPublicaciones);
       const postsResponse = await fetch(urlPublicaciones)
 

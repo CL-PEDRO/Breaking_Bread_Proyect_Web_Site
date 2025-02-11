@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
       try {
         // Realiza una solicitud POST al servidor
-        const response = await fetch('http://localhost:5000/usersAuthentication', {
+        const response = await fetch('http://localhost:5000/user/info/usersAuthentication', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

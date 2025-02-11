@@ -12,6 +12,21 @@
       rel="stylesheet"
     />
     <style>
+
+      .post-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        cursor: pointer;
+      }
+    
+      .post-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+      }
+    
+      .post-img {
+        object-fit: cover;
+        height: 150px; /* Ajusta según necesidad */
+      }
       .card{
         margin: 0 auto;
         width: 400px;

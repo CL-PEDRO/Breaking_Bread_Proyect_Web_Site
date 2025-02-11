@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Dynamic Search Interface</title>
+   <style>
+    .search-results {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+  
+    #resultsList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+  
+    #resultsList li {
+        background: #fff;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+  
+    #resultsList li:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+  
+    #resultsList li a {
+        text-decoration: none;
+        color: #333;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+  
+    #resultsList img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+  
+    .info-container {
+        display: flex;
+        flex-direction: column;
+    }
+  
+    .info-container span {
+        font-size: 14px;
+        color: #666;
+    }
+  
+    .info-container .title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #222;
+    }
+  </style>
+  
+   <style>
+       body {
+           font-family: 'Arial', sans-serif;
+           margin: 0;
+           padding: 0;
+           background-color: #eef2f5;
+           color: #333;
+       }
+       .header {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           background-color: #f2f2f2;
+           color: black;
+           padding: 10px 20px;
+           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+       }
+       .header .logo {
+           display: flex;
+           align-items: center;
+           font-size: 20px;
+           font-weight: bold;
+       }
+       .header .logo img {
+           height: 40px;
+           margin-right: 10px;
+       }
+       .header .navegation {
+           display: flex;
+           align-items: center;
+       }
+       .header .navegation .nav-links {
+           list-style: none;
+           display: flex;
+           margin: 0;
+           padding: 0;
+       }
+       .header .navegation .nav-links li {
+           margin: 0 15px;
+       }
+       .header .navegation .nav-links a {
+           color: black;
+           text-decoration: none;
+           font-weight: 500;
+           font-size: 16px;
+       }
+       .header .navegation .nav-links a:hover {
+           text-decoration: none;
+           padding: 5px;
+           background-color: #810909;
+           color: #fff;
+           margin: 10px;
+           border-radius: 5px;
+       }
+       .header .search-bar {
+           display: none;
+       }
+       .header .search-bar.active {
+           display: flex;
+       }
+       .header .search-bar input {
+           padding: 10px;
+           border: 1px solid #ccc;
+           border-radius: 8px;
+           font-size: 16px;
+           margin-left: 20px;
+       }
+
+
+       .search-container {
+           
+           max-width: 800px;
+           margin: 5px auto;
+           padding: 20px;
+           background-color: #fff;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           border-radius: 12px;
+       }
+       .search-header {
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           border-bottom: 2px solid #ddd;
+           padding-bottom: 15px;
+       }
+       .search-header input {
+           flex-grow: 1;
+           padding: 12px;
+           margin-right: 10px;
+           border: 1px solid #ccc;
+           border-radius: 8px;
+           font-size: 16px;
+       }
+       .search-header button {
+           background-color: #007bff;
+           color: white;
+           padding: 12px 20px;
+           border: none;
+           border-radius: 8px;
+           font-size: 16px;
+           cursor: pointer;
+           transition: background-color 0.3s;
+       }
+       .search-header button:hover {
+           background-color: #0056b3;
+       }
+       .search-results {
+           margin-top: 5px;
+       }
+       .search-results ul {
+           list-style: none;
+           padding: 0;
+           margin: 0;
+       }
+       .search-results li {
+           padding: 15px;
+           border-bottom: 1px solid #eee;
+           display: flex;
+           align-items: center;
+           transition: background-color 0.3s;
+       }
+       .search-results li:hover {
+           background-color: #f9f9f9;
+       }
+       .search-results li img {
+           width: 50px;
+           height: 50px;
+           border-radius: 50%;
+           margin-right: 15px;
+           border: 2px solid #ddd;
+       }
+       .search-results li span {
+           font-size: 18px;
+           font-weight: 500;
+           color: #333;
+       }
+   </style>
+   
+</head>
+<body>
+   <!-- Navigation Bar -->
+   <header class="header">
+       <div class="logo">
+           <img src="../images/logo.png" alt="logo" class="logo-img">
+           Breaking Bread
+       </div>
+       <nav class="navegation">
+           <ul class="nav-links">
+               <li><a href="#">Inicio</a></li>
+               <li><a href="#">Foro</a></li>
+               <li><a href="#">Mi perfil</a></li>
+               <li><a href="#" id="search-button">Buscar</a></li>
+           </ul>
+           <div class="search-bar">
+               <input type="text"   placeholder="Buscar..." class="search-input">
+           </div>
+       </nav>
+   </header>
+
+
+   <div class="search-container" >
+    <div class="row">
+        <!-- Sección principal: Búsqueda de foros -->
+        <main class="col-md-8" style="display: flex;">
+            <div class="search-header">
+                <input type="text" oninput="searchForumByName(this.value)" id="searchInput" placeholder="Buscar foros por nombre...">
+                <button onclick="">Buscar</button>
+            </div>
+
+            <!-- Resultados de búsqueda -->
+            <div class="search-results">
+                <ul id="resultsList">
+                    <!-- Aquí se insertarán los foros dinámicamente -->
+                </ul>
+            </div>
+        </main>
+
+        <!-- Barra lateral: Crear nuevo foro -->
+        <aside class="col-md-4">
+            <div class="create-forum">
+                <h3>Crear Nuevo Foro</h3>
+                <button id="createNewForum" class="btn btn-custom">Nuevo Foro</button>
+                
+            </div>
+        </aside>
+    </div>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', ()=>{
+
+            
+            const createNewForumBtn = document.getElementById('createNewForum');
+
+
+            createNewForumBtn.addEventListener('click',()=>{
+                if(isLogged())
+                {
+                    window.location.href = 'http://localhost:4200/html/create-forum.html';
+                }
+            });
+         
+        });
+
+
+        async function searchForumByName(name)
+        {
+            console.log("Se esta buscando en la funcion",name);
+            urlForum = `http://localhost:5000/forum/getInfoForum/${name}`;
+            fetch(urlForum)
+            .then(response => response.json())
+            .then(data=>{
+                console.table(data);
+                showResults(data);
+            })
+        }
+    
+        function showResults(data)
+        {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML= '';
+            data.forEach(forum =>{
+                const li = document.createElement('li');
+                console.log("Id del foro",forum.id_foro);
+                li.innerHTML = `
+            
+                <a href="http://localhost:4200/html/showForum.html?q=${forum.id_foro}">
+                 <img src="/${forum.image}" alt="Profile Picture">
+                <div class="info-container">
+                <span class="title">${forum.titulo_foro}</span>
+                <span>${forum.descripcion_Foro}</span>
+             </div>
+            </a>`;
+
+                resultsList.appendChild(li);
+            })
+        }
+    
+    </script>
+
+
+    
+
+
+   <script src="../js/nav.js" defer></script>
+</body>
+</html>
+
+

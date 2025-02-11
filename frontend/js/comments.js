@@ -14,7 +14,10 @@ document.addEventListener("DOMContentLoaded", function ()  {
 
         getComments();
         submitButton.addEventListener('click', function(event) {
+
+            
             event.preventDefault();  // Evitar acción por defecto (enviar formulario)
+            isLogged();
             
             
 
@@ -41,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
         // Función para obtener comentarios
         async function getComments() {
             const id_post = urlParameters.get('q');
-            const response = await fetch(`http://localhost:5000/publicaciones/${id_post}/getComments`);
+            const response = await fetch(`http://localhost:5000/posts/userActions/${id_post}/getComments`);
             const data = await response.json();
 
 
@@ -54,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
                 
                 newComment.innerHTML= `
                 <div id="commentsBox">
-                <img class="ImagenComentario" src="${comentario.foto_perfil}"></img>
+                <img class="ImagenComentario" src="/${comentario.foto_perfil}"></img>
                 <span><strong>${comentario.nombre_Usuario}:<br></strong></span>
                 <span>${comentario.comentario}</span>
                 <span><p id="dateTime">${writtenTime}</p></span>
@@ -71,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function ()  {
         // Función para enviar el comentario
         async function postComment(data) {
             const id_post = urlParameters.get('q');
-            const response = await fetch(`http://localhost:5000/publicaciones/${id_post}/comentarios`, {
+            const response = await fetch(`http://localhost:5000/posts/userActions/${id_post}/postComment`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

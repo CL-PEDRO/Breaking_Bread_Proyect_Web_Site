@@ -31,7 +31,7 @@ async function getLikes(id_post) {
 
     console.log("ID de publicacion para para buscar 2 ",id_post);
     try{
-        const urlFetch =`http://localhost:5000/getLikes/${id_post}`;
+        const urlFetch =`http://localhost:5000/posts/info/getLikes/${id_post}`;
         const response = await fetch(urlFetch);
 
         if(!response.ok)
@@ -58,7 +58,7 @@ async function actionsPosts(id_post) {
     try{
         //
         ///publicaciones/addLike/:id_post/:id_user
-        const urlFetch =`http://localhost:5000/publicaciones/addLike/${id_post}/${id_user}`;
+        const urlFetch =`http://localhost:5000/posts/userActions/addLike/${id_post}/${id_user}`;
         const response = await fetch(urlFetch,{method: 'POST',headers: {'Content-Type': 'application/json'} });
 
         if(!response.ok)

@@ -5,6 +5,68 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Dynamic Search Interface</title>
    <style>
+    .search-results {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+  
+    #resultsList {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+  
+    #resultsList li {
+        background: #fff;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+  
+    #resultsList li:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    }
+  
+    #resultsList li a {
+        text-decoration: none;
+        color: #333;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+  
+    #resultsList img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+  
+    .info-container {
+        display: flex;
+        flex-direction: column;
+    }
+  
+    .info-container span {
+        font-size: 14px;
+        color: #666;
+    }
+  
+    .info-container .title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #222;
+    }
+  </style>
+  
+   <style>
        body {
            font-family: 'Arial', sans-serif;
            margin: 0;
@@ -210,7 +272,7 @@
            const resultsList = document.getElementById('resultsList');
 
 
-           fetch(`http://localhost:5000/recetasPorNombre/${query}`)
+           fetch(`http://localhost:5000/recipe/recetasPorNombre/${query}`)
                .then(response => response.json())
                .then(data => {
                 showResults(data);
@@ -237,11 +299,11 @@
 
 
             if(!isNaN(searchNumer) && Number.isInteger(searchNumer)){
-                 url = `http://localhost:5000/recetastipo/${searchNumer}`;
+                 url = `http://localhost:5000/recipe/recetastipo/${searchNumer}`;
                 console.log("Es un numero :D",url);
 
             }else{
-                 url = `http://localhost:5000/recetasPorNombre/${searchTerm}`;
+                 url = `http://localhost:5000/recipe/recetasPorNombre/${searchTerm}`;
                 console.log("Es una cadena :D",url);
             }           
 
@@ -276,7 +338,7 @@
        async function searchByName(name)
        {
 
-        const url = `http://localhost:5000/recetasPorNombre/${name}`;
+        const url = `http://localhost:5000/recipe/recetasPorNombre/${name}`;
 
         try{
             const response = await fetch(url, {
@@ -287,7 +349,7 @@
             if(response.ok)
             {
                 const data = await response.json();
-                console.log(data);
+                console.table(data);
                 showResults(data);
             }
 
@@ -307,15 +369,16 @@
         resultsList.innerHTML = '';
         data.forEach(receta => {
             const li = document.createElement('li');
+            console.log("Id del post",receta.id_publicacion);
             li.innerHTML = `
                 
-                <img src="${receta.url_image}" alt="Profile Picture">
-                <a href='http://localhost:4200/html/showPost.html?q=${receta.id_publicacion}'> 
-                <span>${receta.nombre_Receta}</span>
-                </a>
-                <span>${receta.descripcion_Reseta}</span>
-                
-            `;
+            <a href="http://localhost:4200/html/showPost.html?q=${receta.id_publicacion}">
+                <img src="/${receta.url_image}" alt="Profile Picture">
+                <div class="info-container">
+                    <span class="title">${receta.nombre_Receta}</span>
+                    <span>${receta.descripcion_Reseta}</span>
+                </div>
+            </a>`;
             resultsList.appendChild(li);
         });
     }

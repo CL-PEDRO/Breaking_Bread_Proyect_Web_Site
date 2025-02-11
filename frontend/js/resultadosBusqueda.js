@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   
     try {
-      const response = await fetch('http://localhost:5000/publicaciones', {
+      const response = await fetch('http://localhost:5000/posts/info/publicaciones', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

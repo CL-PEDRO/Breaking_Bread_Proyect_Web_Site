@@ -1,0 +1,70 @@
+No existe la carpeta uploads
+
+import fs from 'fs';
+
+const uploadDir = '/app/uploads/images';
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+
+router.get("/postdata/:id_post", async (req, res) => {
+  try {
+    const { id_post } = req.params;
+    console.log("Solicitud recibida en /postdata/:id_post", id_post); // Log para depuración
+    const queryPost = `SELECT Publicaciones.titulo, Usuario.nombre_Usuario,
+       Contenidos.texto , Recetas.nombre_Receta,Recetas.descripcion_Reseta,Recetas.url_image,Usuario.foto_perfil
+       ,Recetas.ingredientes,Recetas.procedimiento
+        from Publicaciones,Contenidos,Recetas, Usuario
+      WHERE Recetas.id_receta = Contenidos.id_receta and
+       Contenidos.id_contenido = Publicaciones.id_contenido and
+        Usuario.id_user = Publicaciones.id_usuario and Publicaciones.id_publicacion=${id_post};`;
+
+    const [post] = await pool.query(queryPost);
+
+    if (post.length === 0) {
+      return res
+        .status(404)
+        .json({
+          message:
+            "No se encontraron publicaciones para el usuario especificado",
+          code: "APP-04",
+        });
+    } else {
+      res.json(post);
+    }
+  } catch (error) {
+    console.error("Error al obtener publicacion:", error);
+    res.status(500).json({ message: "Error al obtener publicacion" });
+  }
+});
+
+
+
+    //ingresar nueva receta deberia existir ??
+
+
+    app.post('/InsertrecipesUnica', async (req, res) => {
+        try {
+        // Desestructuración de los datos del cuerpo de la solicitud
+        const { name, description, ingredients, preparation,url_image, id_tipo } = req.body;
+    
+        // Validación básica de los datos recibidos
+        if (!name || !description || !ingredients || !preparation || !id_tipo) {
+            return res.status(400).json({ message: 'Missing required fields', code: 'APP-02' });
+        }
+    
+        // Inserción en la base de datos
+        await pool.query(
+            'INSERT INTO `Recetas` (`nombre_Receta`, `descripcion_Reseta`, `ingredientes`, `procedimiento`,`url_image`, `id_tipo`) VALUES (?, ?, ?, ?, ?, ?)',
+            [name, description, ingredients, preparation,url_image, id_tipo]
+        );
+    
+        // Respuesta exitosa
+        res.status(201).json({ message: 'Recipe created', code: 'APP-01' });
+        } catch (error) {
+        // Manejo de errores
+        console.error('Error creating recipe:', error);
+        res.status(500).json({ message: 'Internal server error', code: 'APP-03' });
+        }
+    });

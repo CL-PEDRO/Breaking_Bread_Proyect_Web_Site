@@ -80,7 +80,7 @@
     
     <script>
         document.getElementById("crear-publicacion-form").addEventListener("submit", async function(event) {
-            event.preventDefault(); // Evita la recarga de la página
+            event.preventDefault(); 
     
             const formData = new FormData(this);
             const id_user = localStorage.getItem("userId");
@@ -88,7 +88,7 @@
             console.table([...formData]);
     
             try {
-                const response = await fetch("http://localhost:5000/CreateRecipePublication", {
+                const response = await fetch("http://localhost:5000/recipe/CreateRecipePublication", {
                     method: "POST",
                     body: formData
                 });
